@@ -1,0 +1,15 @@
+{
+    "ci": {
+        "collect": {
+            "settings": {
+                "output": ["html"],
+                "onlyCategories": [
+                    "performance",
+                    "accessibility",
+                    "best-practices",
+                    "seo"
+                ]
+            }
+        }
+    }
+}
