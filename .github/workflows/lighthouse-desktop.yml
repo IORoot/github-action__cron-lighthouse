@@ -1,0 +1,118 @@
+# Ubuntu-latest versions
+# mysql  Ver 8.0.23-0ubuntu0.20.04.1 for Linux on x86_64 ((Ubuntu))
+# PHP 8.0.3 (cli) (built: Mar  5 2021 07:54:13) ( NTS )
+
+# Interesting links:
+# - https://github.com/PrestaShop/PrestaShop/tree/develop/.github/workflows
+# - https://github.com/PrestaShop/PrestaShop/blob/develop/.github/workflows/sanity-74.yml
+# - https://freek.dev/1590-how-to-use-a-mysql-database-on-github-actions
+
+name: Lighthouse
+
+on:
+  workflow_dispatch:
+
+env:
+  config:  'lighthouse-desktop-config.json'
+  ssh:     'root@metrics.londonparkour.com'
+  dest:    '/tmp'
+  logdir:  '/var/log/lighthouse'
+  logfile: 'lighthouse.log'
+  filter:  '[ .["fetchTime"], .["configSettings"]["formFactor"], .["finalUrl"], .["categories"]["performance"]["score"], .["categories"]["accessibility"]["score"], .["categories"]["best-practices"]["score"], .["categories"]["seo"]["score"] ]'
+
+jobs:
+  lighthouse_mobile:
+
+    runs-on: ubuntu-latest
+    name: Lighthouse Matrix
+    continue-on-error: true
+
+    strategy:
+      matrix:
+        urls: [
+            'https://londonparkour.com/',
+            # 'https://londonparkour.com/classes/',
+            # 'https://londonparkour.com/error/',
+            # 'https://londonparkour.com/bookings/',
+            # 'https://londonparkour.com/support/',
+            # 'https://londonparkour.com/military/',
+            # 'https://londonparkour.com/pt/',
+            # 'https://londonparkour.com/grouptraining/',
+            # 'https://londonparkour.com/giftcards/',
+            # 'https://londonparkour.com/contact/',
+            # 'https://londonparkour.com/stripe-checkout-result/',
+            # 'https://londonparkour.com/event/',
+            # 'https://londonparkour.com/support/beginners-class/',
+            # 'https://londonparkour.com/support/injury-professionals/',
+            # 'https://londonparkour.com/support/class-locations/',
+            # 'https://londonparkour.com/support/coaches/',
+            # 'https://londonparkour.com/support/youth-class/',
+            # 'https://londonparkour.com/support/updates/',
+            # 'https://londonparkour.com/support/terms-of-service/',
+            # 'https://londonparkour.com/support/student-waiver/',
+            # 'https://londonparkour.com/support/privacy-policy/',
+            # 'https://londonparkour.com/support/pricing/',
+            # 'https://londonparkour.com/support/photography-video/',
+            # 'https://londonparkour.com/support/personal-training-pt/',
+            # 'https://londonparkour.com/support/hiring-us/',
+            # 'https://londonparkour.com/support/gift-cards/',
+            # 'https://londonparkour.com/support/discounts/',
+            # 'https://londonparkour.com/support/equality-policy/',
+            # 'https://londonparkour.com/support/contacting-us/',
+            # 'https://londonparkour.com/support/code-of-conduct/',
+            # 'https://londonparkour.com/event/',
+            # 'https://londonparkour.com/amp/homepage/',
+            # 'https://londonparkour.com/amp/classes/',
+            # 'https://londonparkour.com/amp/pt/'
+          ]
+
+    steps:
+
+      - uses: actions/checkout@v2
+      
+      - name: Run Lighthouse on url
+        uses: treosh/lighthouse-ci-action@v8
+        with:
+          urls: |
+            ${{ matrix.urls }}
+          uploadArtifacts: true
+          configPath: './.github/workflows/setup/${{ env.config }}'
+
+
+  server:
+
+    runs-on: ubuntu-latest
+    name: Upload to server
+    needs: [lighthouse_mobile]
+
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: Download lighthouse results
+        uses: actions/download-artifact@v2
+        with:
+          name: lighthouse-results
+
+      # copy result to server
+      - name: Copy result to Server
+        run: |
+          echo "${{secrets.DEPLOY_KEY}}" > deploy_key
+          chmod 600 ./deploy_key
+          rsync -chav --delete\
+            -e 'ssh -i ./deploy_key -o StrictHostKeyChecking=no' \
+            --exclude /deploy_key \
+            --exclude /.github/ \
+            ./lhr* ${{env.ssh}}:${{env.dest}}
+
+      # Cat results to logfile
+      - name: Cat to logfile
+        uses: JimCronqvist/action-ssh@master
+        with:
+          hosts: ${{env.ssh}}
+          privateKey: ${{secrets.DEPLOY_KEY}}
+          command: |
+            cd ${{env.dest}}
+            cp lhr*.json lhr.json
+            jq -c '${{env.filter}}' ${{env.dest}}/lhr.json >> ${{env.logdir}}/${{env.logfile}}
+            rm -f ${{env.dest}}/lhr*
