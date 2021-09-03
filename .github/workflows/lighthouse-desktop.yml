@@ -117,4 +117,4 @@ jobs:
           command: |
             cd ${{env.dest}}
             for FILE in lhr*.json; do jq -c '${{env.filter}}' $FILE >> ${{env.logdir}}/${{env.logfile}}; done
-            # rm -f ${{env.dest}}/lhr*
+            rm -f ${{env.dest}}/lhr*
