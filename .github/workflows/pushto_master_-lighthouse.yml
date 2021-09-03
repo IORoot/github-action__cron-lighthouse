@@ -20,7 +20,7 @@ env:
   filter:  '[ .["fetchTime"], .["configSettings"]["formFactor"], .["finalUrl"], .["categories"]["performance"]["score"], .["categories"]["accessibility"]["score"], .["categories"]["best-practices"]["score"], .["categories"]["seo"]["score"] ]'
 
 jobs:
-  lighthouse_Mobile:
+  lighthouse_mobile:
 
     runs-on: ubuntu-latest
     name: Lighthouse Matrix
@@ -82,7 +82,7 @@ jobs:
 
     runs-on: ubuntu-latest
     name: Upload to server
-    needs: [lighthouse_001]
+    needs: [lighthouse_mobile]
 
     steps:
 
