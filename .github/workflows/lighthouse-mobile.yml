@@ -11,6 +11,9 @@ name: Lighthouse Mobile
 
 on:
   workflow_dispatch:
+  
+  schedule:
+    - cron:  '0 1 * * *'
 
 env:
   config:  'lighthouse-mobile-config.json'
@@ -31,39 +34,39 @@ jobs:
       matrix:
         urls: [
             'https://londonparkour.com/',
-            # 'https://londonparkour.com/classes/',
-            # 'https://londonparkour.com/error/',
-            # 'https://londonparkour.com/bookings/',
-            # 'https://londonparkour.com/support/',
-            # 'https://londonparkour.com/military/',
-            # 'https://londonparkour.com/pt/',
-            # 'https://londonparkour.com/grouptraining/',
-            # 'https://londonparkour.com/giftcards/',
-            # 'https://londonparkour.com/contact/',
-            # 'https://londonparkour.com/stripe-checkout-result/',
-            # 'https://londonparkour.com/event/',
-            # 'https://londonparkour.com/support/beginners-class/',
-            # 'https://londonparkour.com/support/injury-professionals/',
-            # 'https://londonparkour.com/support/class-locations/',
-            # 'https://londonparkour.com/support/coaches/',
-            # 'https://londonparkour.com/support/youth-class/',
-            # 'https://londonparkour.com/support/updates/',
-            # 'https://londonparkour.com/support/terms-of-service/',
-            # 'https://londonparkour.com/support/student-waiver/',
-            # 'https://londonparkour.com/support/privacy-policy/',
-            # 'https://londonparkour.com/support/pricing/',
-            # 'https://londonparkour.com/support/photography-video/',
-            # 'https://londonparkour.com/support/personal-training-pt/',
-            # 'https://londonparkour.com/support/hiring-us/',
-            # 'https://londonparkour.com/support/gift-cards/',
-            # 'https://londonparkour.com/support/discounts/',
-            # 'https://londonparkour.com/support/equality-policy/',
-            # 'https://londonparkour.com/support/contacting-us/',
-            # 'https://londonparkour.com/support/code-of-conduct/',
-            # 'https://londonparkour.com/event/',
-            # 'https://londonparkour.com/amp/homepage/',
-            # 'https://londonparkour.com/amp/classes/',
-            # 'https://londonparkour.com/amp/pt/'
+            'https://londonparkour.com/classes/',
+            'https://londonparkour.com/error/',
+            'https://londonparkour.com/bookings/',
+            'https://londonparkour.com/support/',
+            'https://londonparkour.com/military/',
+            'https://londonparkour.com/pt/',
+            'https://londonparkour.com/grouptraining/',
+            'https://londonparkour.com/giftcards/',
+            'https://londonparkour.com/contact/',
+            'https://londonparkour.com/stripe-checkout-result/',
+            'https://londonparkour.com/event/',
+            'https://londonparkour.com/support/beginners-class/',
+            'https://londonparkour.com/support/injury-professionals/',
+            'https://londonparkour.com/support/class-locations/',
+            'https://londonparkour.com/support/coaches/',
+            'https://londonparkour.com/support/youth-class/',
+            'https://londonparkour.com/support/updates/',
+            'https://londonparkour.com/support/terms-of-service/',
+            'https://londonparkour.com/support/student-waiver/',
+            'https://londonparkour.com/support/privacy-policy/',
+            'https://londonparkour.com/support/pricing/',
+            'https://londonparkour.com/support/photography-video/',
+            'https://londonparkour.com/support/personal-training-pt/',
+            'https://londonparkour.com/support/hiring-us/',
+            'https://londonparkour.com/support/gift-cards/',
+            'https://londonparkour.com/support/discounts/',
+            'https://londonparkour.com/support/equality-policy/',
+            'https://londonparkour.com/support/contacting-us/',
+            'https://londonparkour.com/support/code-of-conduct/',
+            'https://londonparkour.com/event/',
+            'https://londonparkour.com/amp/homepage/',
+            'https://londonparkour.com/amp/classes/',
+            'https://londonparkour.com/amp/pt/'
           ]
 
     steps:
