@@ -18,7 +18,17 @@ env:
   logdir:  '/var/log/lighthouse'
   logfile: 'lighthouse.log'
   filter:  '[ .["fetchTime"], .["configSettings"]["formFactor"], .["finalUrl"], .["categories"]["performance"]["score"], .["categories"]["accessibility"]["score"], .["categories"]["best-practices"]["score"], .["categories"]["seo"]["score"] ]'
-  urls:    [
+
+jobs:
+  lighthouse_Mobile:
+
+    runs-on: ubuntu-latest
+    name: Lighthouse Matrix
+    continue-on-error: true
+
+    strategy:
+      matrix:
+        urls: [
             'https://londonparkour.com/',
             # 'https://londonparkour.com/classes/',
             # 'https://londonparkour.com/error/',
@@ -54,19 +64,6 @@ env:
             # 'https://londonparkour.com/amp/classes/',
             # 'https://londonparkour.com/amp/pt/'
           ]
-
-
-
-jobs:
-  lighthouse_Mobile:
-
-    runs-on: ubuntu-latest
-    name: Lighthouse Matrix
-    continue-on-error: true
-
-    strategy:
-      matrix:
-        urls: ${{ env.urls }}
 
     steps:
 
