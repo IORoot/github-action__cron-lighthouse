@@ -3,7 +3,14 @@
         "collect": {
             "settings": {
                 "output": ["json"],
-                "emulatedFormFactor": "desktop",
+                "formFactor": "desktop",
+                "screenEmulation": {
+                    "width": 1920, 
+                    "height": 1080, 
+                    "deviceScaleRatio": 1, 
+                    "mobile": false, 
+                    "disabled": false
+                },
                 "onlyCategories": [
                     "performance",
                     "accessibility",
