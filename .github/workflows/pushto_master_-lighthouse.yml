@@ -117,7 +117,9 @@ jobs:
           hosts: ${{env.ssh}}
           privateKey: ${{secrets.DEPLOY_KEY}}
           command: |
-            jq -c ${{env.filter}} /${{env.dest}}/lhr*.json > ${{env.logdir}}/${{env.logfile}}
-            cp lhr*.html ${{env.logdir}}
+            cd ${{env.dest}}
+            cp lhr*.json lhr.json
+            jq -c '${{env.filter}}' ${{env.dest}}/lhr.json > ${{env.logdir}}/${{env.logfile}}
+            cp ${{env.dest}}/lhr*.html ${{env.logdir}}
             
 
