@@ -75,7 +75,7 @@ jobs:
           urls: |
             ${{ matrix.urls }}
           uploadArtifacts: true
-          configPath: './.github/workflows/setup/lighthouse-mobile-config.json'
+          configPath: './.github/workflows/setup/lighthouse-dektop-config.json'
 
 
   server:
