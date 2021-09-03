@@ -1,0 +1,16 @@
+{
+    "ci": {
+        "collect": {
+            "settings": {
+                "output": ["json"],
+                "emulatedFormFactor": "desktop",
+                "onlyCategories": [
+                    "performance",
+                    "accessibility",
+                    "best-practices",
+                    "seo"
+                ]
+            }
+        }
+    }
+}
